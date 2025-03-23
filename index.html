@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal</title>
+    <link rel="icon" type="image/png" href="logo-developpeur.png">
+    <style>
+      body {
+        background-color: black;
+        color: green;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.2em;
+      }
+      #start-div{
+        position: absolute;
+        top:0;
+        left:0;
+        width: 100%;
+        height: 95%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #start {
+        font-family: 'Courier New', Courier, monospace;
+        background-color: black;
+        border: 3px solid green;
+        color: green;
+        border-radius: 5px;
+        font-size: 3em;
+        display: block;
+        margin: 100px auto;
+      }
+
+      #start:hover {
+        cursor: pointer;
+        background-color: green;
+        color: black;
+      }
+
+      #start:active,
+      #start:focus {
+        outline: none;
+      }
+      input {
+        color: white;
+        background-color: black;
+        border: none;
+        outline: none;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9em;
+        width: 400px;
+        caret-color: green;
+      }
+      .titre-ligne {
+        display: none;
+      }
+      .display-none {
+        display: none;
+      }
+      em {
+        color: red;
+      }
+      .chut{
+        color: rgb(1, 94, 1);
+      }
+      strong {
+        color: rgb(37, 37, 252);
+
+      }
+      .titre{
+        line-height: 0rem;
+      }
+      div {
+        margin-top: 16px;
+      }
+      a {
+        color: green;
+        text-decoration: none;
+      }
+      a:hover{
+        background-color: white;
+        color: black;
+      }
+      /* Styles pour l'effet d'écriture */
+      @keyframes type {
+        from {
+          width: 0;
+        }
+      }
+      output {
+        display: inline-block;
+        border-right: 1px solid #fff;
+        margin-right: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        animation: type 0.5s steps(20, end), blink-caret 0.75s step-end infinite;
+      }
+      text{
+        color: rgb(211, 211, 1);
+      }
+      @keyframes blink-caret {
+        from, to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #fff;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="start-div"><button id="start">START</button></div>
+    <div class="titre">
+      <p class="titre-ligne chut">Run <em>web developper portfolio</em></p>
+      <p class="titre-ligne chut" id="datetime"></p>
+      <p class="titre-ligne">┌=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=┐</p>
+      <p class="titre-ligne">|       ___           __  ___     ___       |</p>
+      <p class="titre-ligne">¦      / _ \___  ____/ /_/ _/__  / (_)__    ¦</p>
+      <p class="titre-ligne">|     / ___/ _ \/ __/ __/ _/ _ \/ / / _ \   |</p>
+      <p class="titre-ligne">¦    /_/   \___/_/  \__/_/ \___/_/_/\___/   ¦</p>
+      <p class="titre-ligne">|                                           |</p>
+      <p class="titre-ligne">└=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=┘</p>
+      <p class="titre-ligne">Welcome to the terminal version of my <em>portfolio</em></p>
+      <p class="titre-ligne">To start enter the command <strong>'help'</strong></p>
+    </div>
+    <div id="echange-1" class="titre-ligne echange-clear">
+      admin> <input type="text" id="input-1">
+      <div id="output-1"></div>
+    </div>
+  </body>
+  <script>
+    "use strict";
+    let startbtn = document.getElementById("start");
+    let startDiv = document.getElementById("start-div");
+    let title = document.querySelectorAll(".titre-ligne");
+    startbtn.addEventListener("click", () => {
+      startDiv.style.display = "none"; // cache le div
+      startbtn.disabled = true;
+      let startSong = new Audio("start.mp3");
+      startSong.play();
+      let i = 0;
+      let interval = setInterval(() => {
+        title[i].classList.remove("titre-ligne");
+        i++;
+        if (i >= title.length) {
+          clearInterval(interval);
+        }
+      }, 300);
+    });
+    
+    let input1 = document.getElementById("input-1");
+    //ajouter automatiquement le focus sur l'input apres 5 secondes
+    setTimeout(() => {
+      input1.focus();
+      input1.setAttribute("autofocus", "");
+      console.log("focus");
+    }, 5000);
+    
+
+
+    function showDateTime() {
+    const date = new Date();
+    const datetimeElement = document.getElementById("datetime");
+    datetimeElement.textContent ="[" + date.toLocaleString() + "]";
+    }
+    document.addEventListener("DOMContentLoaded", showDateTime);
+
+    let numEchanges = 1;
+    let contactOn = false;
+
+    // Traitement de l'entrée utilisateur
+    function processInput(inputText) {
+    let outputText;
+
+    if(contactOn === true){
+      let inputEchange = document.getElementById(`input-${numEchanges}`);
+      let inputNum1 = document.getElementById(`input-${numEchanges - 1}`);
+      let inputNum2 = document.getElementById(`input-${numEchanges - 2}`);
+      if(inputNum1.value === "contact"){
+        outputText = `Alright, <strong>${inputEchange.value}</strong>
+        <br>What's your <strong>email</strong> ?`;
+      }else if(inputNum2.value === "contact"){
+        outputText = `And now, <strong>${inputNum1.value}</strong>
+        <br>With your <strong>${inputEchange.value}</strong> email<br>
+        What's your <strong>message</strong>?`;
+      }else{
+        let message1 = "WOW how kind thank you !";
+        let message2 = "I will answer you as soon as possible";
+        let message3 = "thanks i will read it as soon as possible";
+        let message4 = "Thanks my assistant will read it as for me ASAP";
+        //outputText prendra un des messages aléatoirement
+        let msg = [message1, message2, message3, message4];
+        let randomMsg = Math.floor(Math.random() * msg.length);
+        outputText ="<text>" + msg[randomMsg] + "</text>";
+        contactOn = false;
+      }
+      return outputText;
+    }else{
+      if (inputText === "Bonjour"){
+        outputText = "Bonjour, comment ça va ?";
+      } else if (inputText === "help") {
+        outputText = `
+          <strong>about</strong>   :  learn more about me <br>
+          <strong>work</strong>    :  show my work <br>
+          <strong>contact</strong> :  contact me <br>
+          <strong>social</strong>  :  show my social media <br>
+          <strong>secret</strong>  :  za~▒▓_*?◙▓_ <br>
+          <strong>clear</strong>   :  efface l'écran <br>
+        `;
+      }
+      else if (inputText === "social") {
+        outputText = `
+          <strong>GitHub</strong>    :  <a href="https://github.com/matHieuTML" target="_blank">github.com/MatHieuTML</a> <br>
+          <strong>LinkedIn</strong>  :  <a href="https://www.linkedin.com/in/mathieu-gaucher-bb2503263/" target="_blank">linkedin.com/in/Mathieu-Gaucher</a> <br>
+          <strong>instagram</strong> :  <a href="https://www.linkedin.com/in/mathieu-gaucher-bb2503263/" target="_blank">instagram.com/mathieugaucher</a> <br>
+          `;
+      }else if (inputText === "about") {
+        outputText = `
+        <code><span class="ascii" style="color: green;
+      display:inline-block;
+      white-space:pre;
+      letter-spacing:0;
+      line-height:1.4;
+      font-family:'Consolas','BitstreamVeraSansMono','CourierNew',Courier,monospace;
+      font-size:5px;
+      "><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>*</span><span>,</span><span>*</span><span>*</span><span>*</span><span>*</span><span>*</span><span>/</span><span>*</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>,</span><span>*</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>*</span><span>*</span><span>,</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>*</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>,</span><span>,</span><span>*</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>*</span><span>,</span><span>*</span><span>,</span><span>.</span><span>*</span><span>,</span><span>*</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>.</span><span>,</span><span>*</span><span>*</span><span>*</span><span>*</span><span>,</span><span>*</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>.</span><span>,</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>/</span><span>,</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>/</span><span>,</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>,</span><span>.</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>,</span><span>,</span><span>,</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>*</span><span>,</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span>/</span><span>*</span><span>.</span><span>.</span><span>.</span><span>,</span><span>.</span><span>.</span><span>,</span><span>*</span><span>,</span><span>.</span><span>,</span><span>.</span><span>.</span><span>.</span><span>,</span><span>,</span><span>,</span><span>.</span><span>.</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>,</span><span>,</span><span>*</span><span>,</span><span>,</span><span>.</span><span>,</span><span>,</span><span>/</span><span>,</span><span>,</span><span>.</span><span>,</span><span>.</span><span>,</span><span>(</span><span>,</span><span>.</span><span>.</span><span>*</span><span>.</span><span>.</span><span> </span><span>.</span><span>,</span><span>.</span><span>.</span><span>.</span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>*</span><span>#</span><span>/</span><span>,</span><span>*</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>,</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>,</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>,</span><span>,</span><span>.</span><span>.</span><span>,</span><span>.</span><span>.</span><span>.</span><span>,</span><span>/</span><span>.</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>*</span><span>*</span><span>,</span><span>,</span><span>*</span><span>/</span><span>*</span><span>,</span><span>,</span><span>*</span><span>,</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span>.</span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>*</span><span>*</span><span>/</span><span>*</span><span>/</span><span>,</span><span>,</span><span>.</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>(</span><span>.</span><span>.</span><span>.</span><span>,</span><span>.</span><span>.</span><span>*</span><span>.</span><span>.</span><span>,</span><span>.</span><span>.</span><span>,</span><span>.</span><span>/</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>,</span><span>,</span><span>,</span><span>.</span><span>.</span><span>.</span><span>,</span><span>,</span><span>*</span><span>,</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>/</span><span>*</span><span>/</span><span>/</span><span>/</span><span>*</span><span>/</span><span>,</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>(</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>.</span><span>,</span><span>,</span><span>*</span><span>,</span><span>,</span><span>.</span><span>,</span><span>,</span><span>.</span><span>*</span><span>,</span><span>,</span><span>.</span><span>,</span><span>,</span><span>.</span><span>.</span><span>.</span><span>(</span><span>.</span><span>*</span><span>,</span><span>,</span><span>,</span><span>.</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>*</span><span>*</span><span>*</span><span>*</span><span>*</span><span>*</span><span>,</span><span>.</span><span>,</span><span>,</span><span>*</span><span>,</span><span>,</span><span>*</span><span>*</span><span>,</span><span>,</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>.</span><span>.</span><span>.</span><span>,</span><span>.</span><span>,</span><span>.</span><span>,</span><span>*</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>.</span><span>,</span><span>*</span><span>(</span><span>,</span><span>/</span><span>,</span><span>/</span><span>*</span><span>*</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>*</span><span>*</span><span>,</span><span>,</span><span>*</span><span>,</span><span>*</span><span>,</span><span>,</span><span>*</span><span>,</span><span>*</span><span>/</span><span>/</span><span>*</span><span>*</span><span>*</span><span>/</span><span>/</span><span>(</span><span>(</span><span>(</span><span>/</span><span>*</span><span>*</span><span>*</span><span>*</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>*</span><span>*</span><span>,</span><span>.</span><span>.</span><span>.</span><span>.</span><span>,</span><span>,</span><span>,</span><span>,</span><span>*</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>*</span><span>,</span><span>,</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>*</span><span>(</span><span>/</span><span>/</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>/</span><span>*</span><span>/</span><span>*</span><span>/</span><span>/</span><span>*</span><span>,</span><span>.</span><span>.</span><span>,</span><span>,</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>/</span><span>/</span><span>*</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>*</span><span>/</span><span>/</span><span>*</span><span>*</span><span>,</span><span>,</span><span>.</span><span>,</span><span>*</span><span>*</span><span>/</span><span>#</span><span>#</span><span>#</span><span>(</span><span>*</span><span>,</span><span>,</span><span>,</span><span>.</span><span>.</span><span>.</span><span>,</span><span>*</span><span>*</span><span>*</span><span>*</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>,</span><span>,</span><span>*</span><span>*</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>*</span><span>*</span><span>*</span><span>.</span><span>,</span><span>.</span><span>*</span><span>(</span><span>(</span><span>(</span><span>/</span><span>*</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>(</span><span>%</span><span>#</span><span>(</span><span>/</span><span>(</span><span>(</span><span>/</span><span>/</span><span>/</span><span>*</span><span>/</span><span>/</span><span>/</span><span>/</span><span>*</span><span>.</span><span>.</span><span>,</span><span>,</span><span>,</span><span>,</span><span>*</span><span>*</span><span>*</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>*</span><span>*</span><span>*</span><span>,</span><span>,</span><span>*</span><span>/</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>(</span><span>(</span><span>#</span><span>#</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>(</span><span>(</span><span>(</span><span>/</span><span>*</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>*</span><span>*</span><span>*</span><span>,</span><span>(</span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>#</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>(</span><span>/</span><span>/</span><span>(</span><span>(</span><span>(</span><span>#</span><span>(</span><span>(</span><span>(</span><span>/</span><span>*</span><span>*</span><span>,</span><span>*</span><span>*</span><span>*</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>,</span><span>,</span><span>,</span><span>(</span><span>(</span><span>/</span><span>/</span><span>/</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>(</span><span>/</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>(</span><span>(</span><span>/</span><span>/</span><span>*</span><span>/</span><span>/</span><span>,</span><span>,</span><span>,</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>,</span><span>,</span><span>*</span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>(</span><span>(</span><span>/</span><span>/</span><span>/</span><span>*</span><span>*</span><span>*</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>/</span><span>/</span><span>/</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>(</span><span>*</span><span>/</span><span>/</span><span>/</span><span>*</span><span>*</span><span>*</span><span>(</span><span>(</span><span>#</span><span>(</span><span>(</span><span>/</span><span>/</span><span>/</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>,</span><span>/</span><span>/</span><span>/</span><span>/</span><span>(</span><span>(</span><span>(</span><span>*</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>*</span><span>(</span><span>(</span><span>(</span><span>/</span><span>*</span><span>*</span><span>*</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>.</span><span>.</span><span>.</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>(</span><span>(</span><span>(</span><span>/</span><span>*</span><span>*</span><span>*</span><span>.</span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>/</span><span>(</span><span>(</span><span>/</span><span>/</span><span>*</span><span>/</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>(</span><span>/</span><span>*</span><span>*</span><span>/</span><span>/</span><span>/</span><span>.</span><span>.</span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>/</span><span>/</span><span>*</span><span>*</span><span>*</span><span>*</span><span>*</span><span>*</span><span>*</span><span>*</span><span>*</span><span>/</span><span>(</span><span>/</span><span>/</span><span>,</span><span> </span><span>.</span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span>*</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>*</span><span>/</span><span>(</span><span>(</span><span>/</span><span>/</span><span>,</span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span>*</span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>/</span><span>(</span><span>(</span><span>(</span><span>/</span><span>/</span><span>,</span><span> </span><span> </span><span>,</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span>.</span><span>/</span><span>(</span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>/</span><span>(</span><span>,</span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      <span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span>,</span><span>,</span><span>%</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>/</span><span>(</span><span>/</span><span>*</span><span>(</span><span>&</span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span>
+      <span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span>.</span><span>,</span><span>.</span><span>.</span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>&</span><span>&</span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span>#</span><span> </span><span>*</span><span>*</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>/</span><span>,</span><span>*</span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span>
+      <span>.</span><span>.</span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span>.</span><span> </span><span>.</span><span> </span><span>.</span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span>.</span><span>/</span><span>&</span><span>,</span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span>*</span><span>(</span><span>(</span><span>,</span><span>*</span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>(</span><span>#</span><span>(</span><span>/</span><span>*</span><span>*</span><span>(</span><span>/</span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span>.</span><span>*</span><span>(</span><span>/</span>
+      <span>.</span><span> </span><span>.</span><span>.</span><span> </span><span>&</span><span>%</span><span>&</span><span>*</span><span> </span><span>.</span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span>*</span><span>(</span><span>(</span><span>*</span><span>/</span><span>(</span><span>(</span><span>/</span><span>(</span><span>(</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>#</span><span>@</span><span>(</span><span>(</span><span>(</span><span>/</span><span>(</span><span>(</span><span>(</span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span>.</span><span> </span><span> </span><span> </span>
+      <span>.</span><span>.</span><span>.</span><span> </span><span> </span><span>.</span><span>/</span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span>,</span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>*</span><span>*</span><span>*</span><span>&</span><span>@</span><span>*</span><span>(</span><span>#</span><span>*</span><span>&</span><span>,</span><span>*</span><span>#</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>.</span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span>
+      <span>.</span><span> </span><span>.</span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>.</span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>/</span><span>(</span><span>,</span><span>/</span><span>(</span><span>/</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>(</span><span>/</span><span>.</span><span> </span><span> </span><span> </span><span>.</span><span> </span><span>.</span><span> </span><span> </span><span> </span><span> </span><span> </span><span>(</span><span>/</span><span>*</span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span>
+      </span></code><br>
+  
+          <strong>Name</strong>    :  Mathieu Gaucher <br>
+          <strong>Age</strong>     :  23 <br>
+          <strong>City</strong>    :  Paris <br>
+          <strong>Studies</strong> :  Master's degree in computer science <br>
+  
+          <text>Hello there !<br>
+          My name is Mathieu Gaucher and it is me who is designed and developed this site.<br>
+          I realized it during my first year in Bachelor web development In Paris.<br>
+          This is not my official website but a personal project for excercising Javascript.<br>
+          My site with all my projects : </text> <a href="https://mathieu-gaucher.fr" target="_blank">mathieu-gaucher.fr</a>
+          `;
+      }else if (inputText === "work") {
+        outputText = `
+        <strong>Slapping</strong>          :  <a href="https://slapping.fr" target="_blank">Slapping.fr</a> <br>
+        <strong>Pay Me Now</strong>        :  <a href="https://paymenowdigital.com" target="_blank">PayMeNowDigital.fr</a> <br>
+        <strong>Moh Green</strong>         :  <a href="https://www.djmohgreen.com target="_blank">djMohGreen.fr</a> <br>
+        <strong> PMN Event</strong>         :  <a href="https://pmnevent.fr" target="_blank">PMNEvent.fr</a> <br>
+        <strong> Pay Me Now shop</strong>   :  <a href="https://paymenowparis.com" target="_blank">paymenow.com</a> <br>
+        `;
+      }
+      else if (inputText === "clear") {
+        //supprimer tous les échanges
+        const echanges = document.querySelectorAll(".echange-clear");
+        echanges.forEach((echange) => {
+          echange.classList.add("display-none");
+        });
+        numEchanges++;
+        const newDiv = document.createElement("div");
+        newDiv.setAttribute("id", `echange-${numEchanges}`);
+        newDiv.setAttribute("class", "echange-clear");
+        //ajouter un petit texte en préfixe de l'input
+        newDiv.textContent = "admin> ";
+        const inputEl = document.createElement("input");
+        inputEl.setAttribute("type", "text");
+        inputEl.setAttribute("id", `input-${numEchanges}`);
+        inputEl.setAttribute("onkeydown", "handleInput(event)");
+        const outputEl = document.createElement("div");
+        outputEl.setAttribute("id", `output-${numEchanges}`);
+        newDiv.appendChild(inputEl);
+        newDiv.appendChild(outputEl);
+        document.body.appendChild(newDiv);
+        const newestInput = document.getElementById(`input-${numEchanges}`);
+        newestInput.focus();
+      }else if (inputText === "contact") {
+        contactOn = true;
+        outputText = ` 
+        <strong>My Mail</strong>  :  <a href="mailto:gaucher.mathieu@icloud.com" target="_blank">gaucher.mathieu@icloud.com</a>
+        <br>
+        What is your <em>name</em> ?`;
+      }
+       else {
+        outputText = "<em>Command not recognized. Test the command 'help'</em>";
+        //jouer un son d'erreur
+        let errorsound = new Audio("sound-error.mp3");
+        errorsound.play();
+      }
+      return outputText;
+      }
+
+    }
+
+    let sound;
+
+    function typeOutput(output, message, duration, callback) {
+      output.classList.add("typing");
+      let i = 0;
+      let startTime = Date.now();
+      let endTime = startTime + duration;
+      let interval = duration / message.length;
+      let timer = setInterval(function() {
+        if (i < message.length && Date.now() < endTime) {
+          const character = message.charAt(i);
+          const soundIndex = Math.floor(Math.random() * 3) + 1;
+          sound = new Audio(`sound${soundIndex}.mp3`);
+          setTimeout(() => { 
+            if (timer !== undefined) {
+              sound.play(); 
+            }
+          }, i * 300);
+          output.innerHTML += character;
+          i++;
+          // Rendre les balises visibles immédiatement
+          if (character === "<") {
+            const endTagIndex = message.indexOf(">", i - 1);
+            const tag = message.slice(i - 1, endTagIndex + 1);
+            output.innerHTML += tag;
+            i = endTagIndex + 1;
+          }
+        } else {
+          clearInterval(timer);
+          timer = undefined;
+          output.classList.remove("typing");
+          if (typeof callback === "function") {
+            callback();
+          }
+          sound.pause();
+        }
+      }, interval);
+    }
+
+
+
+    // Gestion de l'entrée utilisateur
+    function handleInput(event) {
+    if (event.key === "Enter") {
+      const input = document.getElementById(`input-${numEchanges}`);
+      const output = document.getElementById(`output-${numEchanges}`);
+      
+      // Traiter l'entrée de l'utilisateur ici
+      const inputText = input.value;
+        const outputText = processInput(inputText);
+
+        typeOutput(output, outputText, 1000, function() {
+          output.innerHTML = outputText;
+        });
+
+      // Créer un nouvel échange
+      numEchanges++;
+      const newDiv = document.createElement("div");
+      newDiv.setAttribute("id", `echange-${numEchanges}`);
+      newDiv.setAttribute("class", "echange-clear");
+      //ajouter un petit texte en préfixe de l'input
+      newDiv.textContent = "admin> ";
+      const inputEl = document.createElement("input");
+      inputEl.setAttribute("type", "text");
+      inputEl.setAttribute("id", `input-${numEchanges}`);
+      inputEl.setAttribute("onkeydown", "handleInput(event)");
+      const outputEl = document.createElement("div");
+      outputEl.setAttribute("id", `output-${numEchanges}`);
+      newDiv.appendChild(inputEl);
+      newDiv.appendChild(outputEl);
+      document.body.appendChild(newDiv);
+      newDiv.scrollIntoView({ behavior: "smooth" });
+      
+      const newestInput = document.getElementById(`input-${numEchanges}`);
+      newestInput.focus();
+      //supprimer lancien focus
+      let moin1 = numEchanges - 1;
+      let ancienInput = document.getElementById(`input-${moin1}`);
+      ancienInput.setAttribute("disabled", "disabled");
+
+    }
+    }
+
+    // Attacher la gestion de l'entrée à tous les inputs avec un id commençant par "input-"
+    document.querySelectorAll("input[id^='input-']").forEach(input => {
+    input.addEventListener("keydown", handleInput);
+    });
+
+  </script>
+</html>
+
+
